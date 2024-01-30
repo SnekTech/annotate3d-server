@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { AnnotateProject } from '../annotateTask/entities/annotateProject.entity';
-import { AnnotateTask } from '../annotateTask/entities/annotateTask.entity';
+import { AnnotateProject } from '../annotate/entities/annotate-project.entity';
+import { AnnotateTask } from '../annotate/entities/annotate-task.entity';
 
 @Entity()
 export class User {

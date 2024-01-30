@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as fsPromise from 'fs/promises';
 import { join } from 'path';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AnnotateProject } from '../entities/annotateProject.entity';
+import { AnnotateProject } from '../entities/annotate-project.entity';
 import { Repository } from 'typeorm';
 import { AnnotateProjectDTO } from '../DTO/annotate-project.dto';
 import { UserService } from '../../user/user.service';

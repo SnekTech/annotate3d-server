@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AnnotateTask } from '../entities/annotateTask.entity';
+import { AnnotateTask } from '../entities/annotate-task.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

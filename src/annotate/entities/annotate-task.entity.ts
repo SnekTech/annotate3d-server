@@ -5,9 +5,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { AnnotateFrame } from './annotateFrame';
+import { AnnotateFrame } from './annotate-frame';
 import { User } from '../../user/user.entity';
-import { AnnotateProject } from './annotateProject.entity';
+import { AnnotateProject } from './annotate-project.entity';
 
 @Entity()
 export class AnnotateTask {

@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { AnnotateTask } from './annotateTask.entity';
+import { AnnotateTask } from './annotate-task.entity';
 
 @Entity()
 export class AnnotateFrame {

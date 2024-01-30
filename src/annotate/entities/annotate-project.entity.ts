@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from '../../user/user.entity';
-import { AnnotateTask } from './annotateTask.entity';
+import { AnnotateTask } from './annotate-task.entity';
 
 @Entity()
 export class AnnotateProject {
