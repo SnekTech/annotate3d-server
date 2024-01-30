@@ -25,9 +25,7 @@ export class AnnotateProjectController {
     @UploadedFile() modelFile: Express.Multer.File,
     @Body() body: AnnotateProjectDTO,
   ) {
-    console.log(modelFile);
-    console.log(body);
-    const modelPath = await this.projectService.saveModel(modelFile);
-    await this.projectService.createProject(body, modelPath)
+    await this.projectService.saveModel(modelFile);
+    await this.projectService.createProject(body, modelFile.originalname)
   }
 }

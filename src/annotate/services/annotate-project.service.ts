@@ -7,8 +7,16 @@ import { Repository } from 'typeorm';
 import { AnnotateProjectDTO } from '../DTO/annotate-project.dto';
 import { UserService } from '../../user/user.service';
 
+function getAppDir() {
+  return join(global.__baseDir, '../');
+}
+
 function getModelsDir() {
-  return join(global.__baseDir, '../public/models');
+  return join(getAppDir(), 'public/models');
+}
+
+function getAnnotateProjectsDir() {
+  return join(getAppDir(), 'public/annotate-projects');
 }
 
 @Injectable()
@@ -27,11 +35,15 @@ export class AnnotateProjectService {
     return location;
   }
 
-  async createProject(dto: AnnotateProjectDTO, modelPath: string) {
+  async createProject(dto: AnnotateProjectDTO, modelName: string) {
     const project = new AnnotateProject();
     project.name = dto.projectName;
-    project.modelPath = modelPath;
+    project.modelName = modelName;
     project.creator = await this.userService.findUser(dto.creatorId);
-    await this.projectRepo.save(project)
+    await this.projectRepo.save(project);
+
+    const projectDir = join(getAnnotateProjectsDir(), project.name);
+    await fsPromise.mkdir(projectDir, { recursive: true });
+    console.log('created annotate project directory: ', projectDir);
   }
 }

@@ -1,5 +1,8 @@
 export class AnnotateProjectDTO {
   projectName: string;
-  // model: File;
   creatorId: number;
+  /**
+   * model file is uploaded using 'model' field
+   * in FormData
+   */
 }

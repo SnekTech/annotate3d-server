@@ -17,10 +17,10 @@ export class AnnotateProject {
   name: string;
 
   @Column()
-  modelPath: string;
+  modelName: string;
 
   // comma separated array
-  @Column({default: ''})
+  @Column({ default: '' })
   targetBones: string;
 
   @ManyToOne(() => User, (user) => user.createdProjects)
