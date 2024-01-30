@@ -13,14 +13,14 @@ export class AnnotateProject {
   @PrimaryGeneratedColumn()
   projectId: number;
 
-  @Column()
-  folderPath: string;
+  @Column({ unique: true })
+  name: string;
 
   @Column()
   modelPath: string;
 
   // comma separated array
-  @Column()
+  @Column({default: ''})
   targetBones: string;
 
   @ManyToOne(() => User, (user) => user.createdProjects)

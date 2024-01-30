@@ -18,4 +18,8 @@ export class UserService implements OnModuleInit {
     admin.isAdmin = true;
     await this.userRepo.save(admin);
   }
+
+  async findUser(id: number) {
+    return await this.userRepo.findOneBy({ userId: id });
+  }
 }

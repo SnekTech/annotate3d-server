@@ -27,7 +27,7 @@ export class AnnotateProjectController {
   ) {
     console.log(modelFile);
     console.log(body);
-    await this.projectService.saveModel(modelFile);
-
+    const modelPath = await this.projectService.saveModel(modelFile);
+    await this.projectService.createProject(body, modelPath)
   }
 }

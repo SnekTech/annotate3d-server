@@ -8,10 +8,12 @@ import { FfmpegService } from './services/ffmpeg.service';
 import { AnnotateProject } from './entities/annotateProject.entity';
 import { AnnotateProjectController } from './controllers/annotate-project.controller';
 import { AnnotateProjectService } from './services/annotate-project.service';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([AnnotateProject, AnnotateTask, AnnotateFrame]),
+    UserModule,
   ],
   controllers: [AnnotateTaskController, AnnotateProjectController],
   providers: [AnnotateProjectService, AnnotateTaskService, FfmpegService],
