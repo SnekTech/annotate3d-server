@@ -1,5 +1,5 @@
 export class AnnotateProjectDTO {
   projectName: string;
-  modelPath: string;
+  // model: File;
   creatorId: number;
 }
