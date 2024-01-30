@@ -1,26 +1,57 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AnnotateTask } from '../entities/annotate-task.entity';
 import { Repository } from 'typeorm';
+import { AnnotateTaskDto } from '../DTO/annotate-task.dto';
+import { UserService } from '../../user/user.service';
+import { AnnotateProjectService } from './annotate-project.service';
+import * as FfmpegCommand from 'fluent-ffmpeg';
+import { join } from 'path';
+import fs from 'fs/promises';
+import { getTempDir } from '../../utils';
+
+function extractFrames(
+  videoPath: string,
+  framesDir: string,
+  fps = 1,
+  frameFormat = 'frame_%03d.png',
+) {
+  return new Promise((resolve, reject) => {
+    const command = FfmpegCommand(videoPath);
+    command
+      .on('error', (err) => reject(err))
+      .on('end', () => resolve('ffmpeg processing finished'))
+      .save(join(framesDir, frameFormat))
+      .fps(fps);
+  });
+}
 
 @Injectable()
-export class AnnotateTaskService implements OnModuleInit {
+export class AnnotateTaskService {
   constructor(
     @InjectRepository(AnnotateTask)
-    private annotateTasksRepo: Repository<AnnotateTask>,
+    private taskRepo: Repository<AnnotateTask>,
+    private projectService: AnnotateProjectService,
+    private userService: UserService,
   ) {}
 
-  async onModuleInit() {
-    await this.tryGenerateOne();
-  }
+  async createTask(dto: AnnotateTaskDto, video: Express.Multer.File) {
+    const task = new AnnotateTask();
+    const creator = await this.userService.findUser(dto.creatorId);
+    const executor = await this.userService.findUser(dto.executorId);
+    const project = await this.projectService.findProjectById(dto.projectId);
 
-  async tryGenerateOne() {
-    const taskCount = await this.annotateTasksRepo.count();
-    if (taskCount > 0) return;
+    task.creator = creator;
+    task.executor = executor;
+    task.project = project;
 
-    const annotateTask = new AnnotateTask();
-    annotateTask.framesDir = 'test-frames';
+    const videoName = video.originalname;
+    task.name = videoName;
 
-    return await this.annotateTasksRepo.save(annotateTask);
+    const tempVideoPath = join(getTempDir(), videoName);
+    await fs.writeFile(tempVideoPath, video.buffer);
+    await extractFrames(tempVideoPath, task.getFramesDir());
+
+    await this.taskRepo.save(task);
   }
 }

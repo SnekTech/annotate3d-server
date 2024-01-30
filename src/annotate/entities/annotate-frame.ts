@@ -4,14 +4,14 @@ import { AnnotateTask } from './annotate-task.entity';
 @Entity()
 export class AnnotateFrame {
   @PrimaryGeneratedColumn()
-  frameId: number
+  frameId: number;
 
   @Column()
-  index: number
+  index: number;
 
   @Column()
-  poseData: string
+  poseData: string;
 
-  @ManyToOne(() => AnnotateTask, task => task.frames)
-  task: AnnotateTask
+  @ManyToOne(() => AnnotateTask, (task) => task.frames)
+  task: AnnotateTask;
 }

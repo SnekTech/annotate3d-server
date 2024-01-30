@@ -5,8 +5,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { join } from 'path';
 import { User } from '../../user/user.entity';
 import { AnnotateTask } from './annotate-task.entity';
+import { getAnnotateProjectsDir } from '../../utils';
 
 @Entity()
 export class AnnotateProject {
@@ -28,4 +30,8 @@ export class AnnotateProject {
 
   @OneToMany(() => AnnotateTask, (task) => task.project)
   tasks: AnnotateTask[];
+
+  getProjectDir() {
+    return join(getAnnotateProjectsDir(), this.name);
+  }
 }
