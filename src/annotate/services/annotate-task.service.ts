@@ -7,7 +7,7 @@ import { UserService } from '../../user/user.service';
 import { AnnotateProjectService } from './annotate-project.service';
 import * as FfmpegCommand from 'fluent-ffmpeg';
 import { join } from 'path';
-import fs from 'fs/promises';
+import * as fs from 'fs/promises';
 import { getTempDir } from '../../utils';
 
 function extractFrames(
@@ -50,7 +50,9 @@ export class AnnotateTaskService {
 
     const tempVideoPath = join(getTempDir(), videoName);
     await fs.writeFile(tempVideoPath, video.buffer);
-    await extractFrames(tempVideoPath, task.getFramesDir());
+    const framesDir = task.getFramesDir();
+    await fs.mkdir(framesDir, { recursive: true });
+    await extractFrames(tempVideoPath, framesDir);
 
     await this.taskRepo.save(task);
   }

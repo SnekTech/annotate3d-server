@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,6 +20,13 @@ export class UserService implements OnModuleInit {
   }
 
   async findUser(id: number) {
-    return await this.userRepo.findOneBy({ userId: id });
+    const user = await this.userRepo.findOneBy({ userId: id });
+    if (user == null)
+      throw new NotFoundException(`user with id ${id} not found`);
+    return user;
+  }
+
+  async findAll() {
+    return await this.userRepo.find();
   }
 }

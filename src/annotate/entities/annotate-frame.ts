@@ -9,7 +9,7 @@ export class AnnotateFrame {
   @Column()
   index: number;
 
-  @Column()
+  @Column({ default: '{}' })
   poseData: string;
 
   @ManyToOne(() => AnnotateTask, (task) => task.frames)
