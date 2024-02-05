@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  Param,
+  ParseIntPipe,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -20,5 +22,10 @@ export class AnnotateProjectController {
     @Body() body: AnnotateProjectDTO,
   ) {
     await this.projectService.createProject(body, modelFile);
+  }
+
+  @Post('delete/:id')
+  async deleteProject(@Param('id', ParseIntPipe) id: number) {
+    await this.projectService.deleteProjectById(id);
   }
 }

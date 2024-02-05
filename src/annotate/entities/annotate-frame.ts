@@ -12,6 +12,6 @@ export class AnnotateFrame {
   @Column({ default: '{}' })
   poseData: string;
 
-  @ManyToOne(() => AnnotateTask, (task) => task.frames)
+  @ManyToOne(() => AnnotateTask, (task) => task.frames, { onDelete: 'CASCADE' })
   task: AnnotateTask;
 }

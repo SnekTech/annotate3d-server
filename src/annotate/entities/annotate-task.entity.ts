@@ -30,7 +30,9 @@ export class AnnotateTask {
   @ManyToOne(() => User, (user) => user.assignedTasks)
   executor: User;
 
-  @ManyToOne(() => AnnotateProject, (project) => project.tasks)
+  @ManyToOne(() => AnnotateProject, (project) => project.tasks, {
+    onDelete: 'CASCADE',
+  })
   project: AnnotateProject;
 
   getFramesDir() {

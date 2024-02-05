@@ -34,11 +34,16 @@ export class AnnotateProjectService {
     project.name = dto.projectName;
     project.modelName = modelName;
     project.creator = await this.userService.findUser(dto.creatorId);
+    project.targetBones = dto.targetBones.join(',');
     await this.projectRepo.save(project);
 
     const projectDir = join(getAnnotateProjectsDir(), project.name);
     await fsPromise.mkdir(projectDir, { recursive: true });
     console.log('created annotate project directory: ', projectDir);
+  }
+
+  async deleteProjectById(id: number) {
+    await this.projectRepo.delete(id);
   }
 
   async findProjectById(id: number) {
