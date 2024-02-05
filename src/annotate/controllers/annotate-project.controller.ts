@@ -11,13 +11,7 @@ import { AnnotateProjectService } from '../services/annotate-project.service';
 
 @Controller('projects')
 export class AnnotateProjectController {
-  constructor(private projectService: AnnotateProjectService) {
-  }
-  @Post('model-upload')
-  @UseInterceptors(FileInterceptor('model'))
-  uploadModel(@UploadedFile() file: File) {
-    console.log(file);
-  }
+  constructor(private projectService: AnnotateProjectService) {}
 
   @Post('create')
   @UseInterceptors(FileInterceptor('model'))
@@ -25,7 +19,6 @@ export class AnnotateProjectController {
     @UploadedFile() modelFile: Express.Multer.File,
     @Body() body: AnnotateProjectDTO,
   ) {
-    await this.projectService.saveModel(modelFile);
-    await this.projectService.createProject(body, modelFile.originalname)
+    await this.projectService.createProject(body, modelFile);
   }
 }

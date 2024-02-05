@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import * as fsPromise from 'fs/promises';
 import { join } from 'path';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AnnotateProject } from '../entities/annotate-project.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { AnnotateProjectDTO } from '../DTO/annotate-project.dto';
 import { UserService } from '../../user/user.service';
 import { getAnnotateProjectsDir, getModelsDir } from '../../utils';
@@ -24,8 +24,13 @@ export class AnnotateProjectService {
     return location;
   }
 
-  async createProject(dto: AnnotateProjectDTO, modelName: string) {
+  async createProject(dto: AnnotateProjectDTO, model: Express.Multer.File) {
+    const foundProject = this.findOneProjectBy({ name: dto.projectName });
+    if (foundProject != null) throw new BadRequestException('项目名称重复');
+
     const project = new AnnotateProject();
+    const modelName = model.originalname;
+    await this.saveModel(model);
     project.name = dto.projectName;
     project.modelName = modelName;
     project.creator = await this.userService.findUser(dto.creatorId);
@@ -37,6 +42,10 @@ export class AnnotateProjectService {
   }
 
   async findProjectById(id: number) {
-    return await this.projectRepo.findOneBy({ projectId: id });
+    return await this.findOneProjectBy({ projectId: id });
+  }
+
+  async findOneProjectBy(findOptions: FindOptionsWhere<AnnotateProject>) {
+    return await this.projectRepo.findOneBy(findOptions);
   }
 }
