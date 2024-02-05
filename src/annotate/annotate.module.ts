@@ -8,6 +8,7 @@ import { AnnotateProject } from './entities/annotate-project.entity';
 import { AnnotateProjectController } from './controllers/annotate-project.controller';
 import { AnnotateProjectService } from './services/annotate-project.service';
 import { UserModule } from '../user/user.module';
+import { AnnotateFrameService } from './services/annotate-frame.service';
 
 @Module({
   imports: [
@@ -15,6 +16,10 @@ import { UserModule } from '../user/user.module';
     UserModule,
   ],
   controllers: [AnnotateTaskController, AnnotateProjectController],
-  providers: [AnnotateProjectService, AnnotateTaskService],
+  providers: [
+    AnnotateProjectService,
+    AnnotateTaskService,
+    AnnotateFrameService,
+  ],
 })
 export class AnnotateModule {}

@@ -9,6 +9,8 @@ import * as FfmpegCommand from 'fluent-ffmpeg';
 import { join } from 'path';
 import * as fs from 'fs/promises';
 import { getTempDir } from '../../utils';
+import { AnnotateFrameService } from './annotate-frame.service';
+import { AnnotateProject } from '../entities/annotate-project.entity';
 
 function extractFrames(
   videoPath: string,
@@ -33,13 +35,17 @@ export class AnnotateTaskService {
     private taskRepo: Repository<AnnotateTask>,
     private projectService: AnnotateProjectService,
     private userService: UserService,
+    private frameService: AnnotateFrameService,
   ) {}
 
-  async createTask(dto: AnnotateTaskDto, video: Express.Multer.File) {
+  async createTask(
+    dto: AnnotateTaskDto,
+    video: Express.Multer.File,
+    project: AnnotateProject,
+  ) {
     const task = new AnnotateTask();
     const creator = await this.userService.findUser(dto.creatorId);
     const executor = await this.userService.findUser(dto.executorId);
-    const project = await this.projectService.findProjectById(dto.projectId);
 
     task.creator = creator;
     task.executor = executor;
@@ -55,5 +61,16 @@ export class AnnotateTaskService {
     await extractFrames(tempVideoPath, framesDir);
 
     await this.taskRepo.save(task);
+
+    const frameCount = (await fs.readdir(framesDir)).length;
+    await this.createTaskFrames(task, frameCount);
+  }
+
+  private async createTaskFrames(task: AnnotateTask, frameCount: number) {
+    const createFrames: Promise<void>[] = [];
+    for (let i = 0; i < frameCount; i++) {
+      createFrames.push(this.frameService.createFrame(i, task));
+    }
+    await Promise.all(createFrames);
   }
 }

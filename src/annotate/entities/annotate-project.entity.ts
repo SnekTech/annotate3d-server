@@ -34,4 +34,8 @@ export class AnnotateProject {
   getProjectDir() {
     return join(getAnnotateProjectsDir(), this.name);
   }
+
+  getTargetBones() {
+    return this.targetBones.split(',');
+  }
 }
