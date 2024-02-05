@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as fsPromise from 'fs/promises';
 import { join } from 'path';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,9 +25,6 @@ export class AnnotateProjectService {
   }
 
   async createProject(dto: AnnotateProjectDTO, model: Express.Multer.File) {
-    const foundProject = this.findOneProjectBy({ name: dto.projectName });
-    if (foundProject != null) throw new BadRequestException('项目名称重复');
-
     const project = new AnnotateProject();
     const modelName = model.originalname;
     await this.saveModel(model);

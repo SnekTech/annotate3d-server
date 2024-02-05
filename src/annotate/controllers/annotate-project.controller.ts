@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Param,
@@ -21,6 +22,11 @@ export class AnnotateProjectController {
     @UploadedFile() modelFile: Express.Multer.File,
     @Body() body: AnnotateProjectDTO,
   ) {
+    const foundProject = await this.projectService.findOneProjectBy({
+      name: body.projectName,
+    });
+    if (foundProject != null) throw new BadRequestException('项目名称重复');
+
     await this.projectService.createProject(body, modelFile);
   }
 
