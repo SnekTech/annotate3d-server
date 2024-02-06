@@ -23,8 +23,9 @@ function extractFrames(
     command
       .on('error', (err) => reject(err))
       .on('end', () => resolve('ffmpeg processing finished'))
-      .save(join(framesDir, frameFormat))
-      .fps(fps);
+      .on('start', (ffCmd: string) => console.log('Executing command: ', ffCmd))
+      .outputFPS(fps)
+      .save(join(framesDir, frameFormat));
   });
 }
 
@@ -67,10 +68,8 @@ export class AnnotateTaskService {
   }
 
   private async createTaskFrames(task: AnnotateTask, frameCount: number) {
-    const createFrames: Promise<void>[] = [];
     for (let i = 0; i < frameCount; i++) {
-      createFrames.push(this.frameService.createFrame(i, task));
+      await this.frameService.createFrame(i, task);
     }
-    await Promise.all(createFrames);
   }
 }
