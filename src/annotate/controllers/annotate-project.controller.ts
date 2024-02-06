@@ -2,6 +2,8 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
+  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -33,5 +35,15 @@ export class AnnotateProjectController {
   @Post('delete/:id')
   async deleteProject(@Param('id', ParseIntPipe) id: number) {
     await this.projectService.deleteProjectById(id);
+  }
+
+  @Delete('delete/all')
+  async deleteAllProjects() {
+    await this.projectService.deleteAllProjects();
+  }
+
+  @Get('createdBy/:id')
+  getProjectsCreatedByUser(@Param('id', ParseIntPipe) id: number) {
+    return this.projectService.findProjectsCreatedBy(id);
   }
 }

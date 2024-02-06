@@ -43,11 +43,21 @@ export class AnnotateProjectService {
     await this.projectRepo.delete(id);
   }
 
+  async deleteAllProjects() {
+    await this.projectRepo.clear();
+  }
+
   async findProjectById(id: number) {
     return await this.findOneProjectBy({ projectId: id });
   }
 
   async findOneProjectBy(findOptions: FindOptionsWhere<AnnotateProject>) {
     return await this.projectRepo.findOneBy(findOptions);
+  }
+
+  findProjectsCreatedBy(creatorId: number) {
+    return this.projectRepo.findBy({
+      creator: { userId: creatorId },
+    });
   }
 }
