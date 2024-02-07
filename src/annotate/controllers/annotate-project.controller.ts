@@ -42,7 +42,7 @@ export class AnnotateProjectController {
     await this.projectService.deleteAllProjects();
   }
 
-  @Get('createdBy/:id')
+  @Get('created-by/:id')
   getProjectsCreatedByUser(@Param('id', ParseIntPipe) id: number) {
     return this.projectService.findProjectsCreatedBy(id);
   }

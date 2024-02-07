@@ -2,6 +2,9 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
+  Param,
+  ParseIntPipe,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -32,5 +35,12 @@ export class AnnotateTaskController {
       throw new BadRequestException(`project with id: ${projectId}  not found`);
 
     await this.annotateTaskService.createTask(dto, video, project);
+  }
+
+  @Get('assigned-to/:executorId')
+  getTasksAssignedToUser(
+    @Param('executorId', ParseIntPipe) executorId: number,
+  ) {
+    return this.annotateTaskService.findTasksAssignedToUser(executorId);
   }
 }

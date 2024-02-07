@@ -67,6 +67,20 @@ export class AnnotateTaskService {
     await this.createTaskFrames(task, frameCount);
   }
 
+  async findTasksAssignedToUser(userId: number) {
+    const executor = await this.userService.findUser(userId);
+    return await this.taskRepo.find({
+      where: {
+        executor,
+      },
+      relations: {
+        creator: true,
+        executor: true,
+        project: true,
+      },
+    });
+  }
+
   private async createTaskFrames(task: AnnotateTask, frameCount: number) {
     for (let i = 0; i < frameCount; i++) {
       await this.frameService.createFrame(i, task);
