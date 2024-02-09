@@ -35,11 +35,8 @@ export class AnnotateProject {
   @OneToMany(() => AnnotateTask, (task) => task.project)
   tasks: AnnotateTask[];
 
-  projectDir: string;
-
-  @AfterLoad()
-  updateProjectDir() {
-    this.projectDir = join(getAnnotateProjectsDir(), this.name);
+  get projectDir() {
+    return join(getAnnotateProjectsDir(), this.name);
   }
 
   @BeforeInsert()
