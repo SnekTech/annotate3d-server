@@ -43,4 +43,9 @@ export class AnnotateTaskController {
   ) {
     return this.annotateTaskService.findTasksAssignedToUser(executorId);
   }
+
+  @Get(':taskId')
+  async getTaskById(@Param('taskId', ParseIntPipe) id: number) {
+    return await this.annotateTaskService.findTaskById(id);
+  }
 }

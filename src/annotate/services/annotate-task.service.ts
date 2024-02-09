@@ -4,7 +4,6 @@ import { AnnotateTask } from '../entities/annotate-task.entity';
 import { Repository } from 'typeorm';
 import { AnnotateTaskDto } from '../DTO/annotate-task.dto';
 import { UserService } from '../../user/user.service';
-import { AnnotateProjectService } from './annotate-project.service';
 import * as FfmpegCommand from 'fluent-ffmpeg';
 import { join } from 'path';
 import * as fs from 'fs/promises';
@@ -34,7 +33,6 @@ export class AnnotateTaskService {
   constructor(
     @InjectRepository(AnnotateTask)
     private taskRepo: Repository<AnnotateTask>,
-    private projectService: AnnotateProjectService,
     private userService: UserService,
     private frameService: AnnotateFrameService,
   ) {}
@@ -68,17 +66,11 @@ export class AnnotateTaskService {
   }
 
   async findTasksAssignedToUser(userId: number) {
-    const executor = await this.userService.findUser(userId);
-    return await this.taskRepo.find({
-      where: {
-        executor,
-      },
-      relations: {
-        creator: true,
-        executor: true,
-        project: true,
-      },
-    });
+    return await this.taskRepo.findBy({ executor: { userId } });
+  }
+
+  async findTaskById(taskId: number) {
+    return await this.taskRepo.findOneBy({ taskId });
   }
 
   private async createTaskFrames(task: AnnotateTask, frameCount: number) {

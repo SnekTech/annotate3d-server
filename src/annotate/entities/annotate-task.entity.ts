@@ -24,14 +24,15 @@ export class AnnotateTask {
   @OneToMany(() => AnnotateFrame, (frame) => frame.task)
   frames: AnnotateFrame[];
 
-  @ManyToOne(() => User, (user) => user.createdTasks)
+  @ManyToOne(() => User, (user) => user.createdTasks, { eager: true })
   creator: User;
 
-  @ManyToOne(() => User, (user) => user.assignedTasks)
+  @ManyToOne(() => User, (user) => user.assignedTasks, { eager: true })
   executor: User;
 
   @ManyToOne(() => AnnotateProject, (project) => project.tasks, {
     onDelete: 'CASCADE',
+    eager: true,
   })
   project: AnnotateProject;
 

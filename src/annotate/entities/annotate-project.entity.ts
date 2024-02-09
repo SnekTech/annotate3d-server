@@ -1,4 +1,6 @@
 import {
+  AfterLoad,
+  BeforeInsert,
   Column,
   Entity,
   ManyToOne,
@@ -23,9 +25,11 @@ export class AnnotateProject {
 
   // comma separated array
   @Column({ default: '' })
-  targetBones: string;
+  targetBonesString: string;
 
-  @ManyToOne(() => User, (user) => user.createdProjects)
+  targetBones: string[];
+
+  @ManyToOne(() => User, (user) => user.createdProjects, { eager: true })
   creator: User;
 
   @OneToMany(() => AnnotateTask, (task) => task.project)
@@ -35,7 +39,13 @@ export class AnnotateProject {
     return join(getAnnotateProjectsDir(), this.name);
   }
 
-  getTargetBones() {
-    return this.targetBones.split(',');
+  @BeforeInsert()
+  joinTargetBonesString() {
+    this.targetBonesString = this.targetBones.join(',');
+  }
+
+  @AfterLoad()
+  splitTargetBones() {
+    this.targetBones = this.targetBonesString.split(',');
   }
 }

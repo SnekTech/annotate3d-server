@@ -31,7 +31,7 @@ export class AnnotateProjectService {
     project.name = dto.projectName;
     project.modelName = modelName;
     project.creator = await this.userService.findUser(dto.creatorId);
-    project.targetBones = dto.targetBones.join(',');
+    project.targetBones = dto.targetBones;
     await this.projectRepo.save(project);
 
     const projectDir = join(getAnnotateProjectsDir(), project.name);

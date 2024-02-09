@@ -22,7 +22,7 @@ export class AnnotateFrameService {
     newFrame.task = task;
 
     const pose: Pose = {};
-    const targetBones = task.project.getTargetBones();
+    const targetBones = task.project.targetBones;
     for (const boneName of targetBones) {
       pose[boneName] = DEFAULT_ROTATION;
     }
