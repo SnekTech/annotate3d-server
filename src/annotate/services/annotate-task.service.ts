@@ -55,7 +55,7 @@ export class AnnotateTaskService {
 
     const tempVideoPath = join(getTempDir(), videoName);
     await fs.writeFile(tempVideoPath, video.buffer);
-    const framesDir = task.getFramesDir();
+    const framesDir = task.framesDir;
     await fs.mkdir(framesDir, { recursive: true });
     await extractFrames(tempVideoPath, framesDir);
 

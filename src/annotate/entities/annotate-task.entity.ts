@@ -1,4 +1,5 @@
 import {
+  AfterLoad,
   Column,
   Entity,
   ManyToOne,
@@ -36,7 +37,10 @@ export class AnnotateTask {
   })
   project: AnnotateProject;
 
-  getFramesDir() {
-    return join(this.project.getProjectDir(), this.name);
+  framesDir: string;
+
+  @AfterLoad()
+  updateFramesDir() {
+    this.framesDir = join(this.project.projectDir, this.name);
   }
 }
