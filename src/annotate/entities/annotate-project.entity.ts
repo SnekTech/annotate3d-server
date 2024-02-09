@@ -1,6 +1,7 @@
 import {
   AfterLoad,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   ManyToOne,
@@ -23,7 +24,10 @@ export class AnnotateProject {
   @Column()
   modelName: string;
 
-  // comma separated array
+  /*
+   comma separated array,
+   don't write this field directly
+   */
   @Column({ default: '' })
   targetBonesString: string;
 
@@ -40,6 +44,7 @@ export class AnnotateProject {
   }
 
   @BeforeInsert()
+  @BeforeUpdate()
   joinTargetBonesString() {
     this.targetBonesString = this.targetBones.join(',');
   }

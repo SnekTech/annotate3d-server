@@ -5,7 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { AnnotateFrame } from './annotate-frame';
+import { AnnotateFrame } from './annotate-frame.entity';
 import { User } from '../../user/user.entity';
 import { AnnotateProject } from './annotate-project.entity';
 import { join } from 'path';
