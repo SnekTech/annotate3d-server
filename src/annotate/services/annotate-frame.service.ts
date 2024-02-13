@@ -40,6 +40,10 @@ export class AnnotateFrameService {
     });
   }
 
+  async getFrameCountInTask(taskId: number) {
+    return await this.frameRepo.countBy({ task: { taskId } });
+  }
+
   async updateFramePose(frameId: number, newPose: Pose) {
     const frame = await this.frameRepo.findOneBy({ frameId });
     frame.pose = newPose;

@@ -48,4 +48,9 @@ export class AnnotateTaskController {
   async getTaskById(@Param('taskId', ParseIntPipe) id: number) {
     return await this.annotateTaskService.findTaskById(id);
   }
+
+  @Get(':taskId/frame-count')
+  getTaskFrameCount(@Param('taskId', ParseIntPipe) taskId: number) {
+    return this.annotateTaskService.getTaskFrameCount(taskId);
+  }
 }

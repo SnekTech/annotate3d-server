@@ -78,4 +78,8 @@ export class AnnotateTaskService {
       await this.frameService.createFrame(i, task);
     }
   }
+
+  getTaskFrameCount(taskId: number) {
+    return this.frameService.getFrameCountInTask(taskId);
+  }
 }
