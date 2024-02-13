@@ -7,10 +7,10 @@ global.__baseDir = __dirname;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.enableCors();
   app.useStaticAssets(path.join(__dirname, '../public'), {
     prefix: '/public/',
   });
-  app.enableCors();
   await app.listen(3000);
 }
 bootstrap();
